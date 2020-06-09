@@ -2,7 +2,7 @@ import _ from "lodash";
 import React, { useState, useEffect } from "react";
 import Spinner from "./Spinner";
 import ReactDOM from "react-dom";
-import { getERC20BalanceOf } from "airswap.js/src/erc20/contractFunctions";
+// import { getERC20BalanceOf } from "airswap.js/src/erc20/contractFunctions";
 
 import {
   Grommet,

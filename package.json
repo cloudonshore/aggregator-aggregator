@@ -6,7 +6,7 @@
   "main": "src/index.js",
   "dependencies": {
     "@0x/contract-addresses": "4.9.0",
-    "airswap.js": "0.1.182",
+    "airswap.js": "0.1.181",
     "axios": "0.19.2",
     "bignumber.js": "9.0.0",
     "grommet": "2.7.6",
@@ -15,6 +15,7 @@
     "react": "16.8.6",
     "react-dom": "16.8.6",
     "react-scripts": "3.0.1",
+    "readable-stream": "3.6.0",
     "styled-components": "4.3.2",
     "web3": "1.2.8"
   },
@@ -27,10 +28,5 @@
     "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject"
   },
-  "browserslist": [
-    ">0.2%",
-    "not dead",
-    "not ie <= 11",
-    "not op_mini all"
-  ]
+  "browserslist": [">0.2%", "not dead", "not ie <= 11", "not op_mini all"]
 }
