@@ -1,10 +1,11 @@
+import _ from 'lodash'
 import bn from "bignumber.js";
-import { QuoteResponse } from "./aggregators/types";
+import {QuoteResponse, Token} from "./aggregators/types";
 
 bn.config({ EXPONENTIAL_AT: 1e9 });
 
-export function getTokenAddressFromSymbol(tokenSymbol, tokens) {
-  return tokens.find(({ symbol }) => symbol === tokenSymbol).address;
+export function getTokenAddressFromSymbol(tokenSymbol: string, tokens: Array<Token>) {
+  return _.get(tokens.find(({ symbol }) => symbol === tokenSymbol), 'address');
 }
 
 export function getAtomicAmountFromDisplayAmount(amount, tokenAddress, tokens) {

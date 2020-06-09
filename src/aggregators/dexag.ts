@@ -1,3 +1,4 @@
+// @ts-nocheck
 import axios from "axios";
 import {
   QuoteRequest,
@@ -90,14 +91,14 @@ class DexAg {
     return axios
       .get(`${DEXAG_BASE_URL}/token-list-full`)
       .then(resp =>
-        resp.data.map(t => ({ ...t, address: t.address.toLowerCase() }))
+        resp.data.map((t:any) => ({ ...t, address: t.address.toLowerCase() }))
       );
   }
   async fetchDexagQuote({
     sourceSymbol,
     destinationSymbol,
     sourceAmountFormatted
-  }) {
+  }: any) {
     let query = `${DEXAG_BASE_URL}/price?from=${sourceSymbol}&to=${destinationSymbol}&fromAmount=${sourceAmountFormatted}&dex=ag`;
 
     const quote: DexagQuote = await axios.get(query).then(resp => resp.data);
@@ -116,7 +117,7 @@ class DexAg {
     destinationSymbol,
     sourceAmountFormatted,
     slippage
-  }) {
+  }: any) {
     const limitAmount = Number(sourceAmountFormatted) / (1 + slippage / 100);
     let query = `${DEXAG_BASE_URL}/trade?from=${sourceSymbol}&to=${destinationSymbol}&fromAmount=${sourceAmountFormatted}&limitAmount=${limitAmount}&dex=ag`;
 
@@ -138,7 +139,7 @@ class DexAg {
       value
     };
   }
-  async getTokenSymbolFromAddress(tokenAddress) {
+  async getTokenSymbolFromAddress(tokenAddress: string) {
     const tokens = await this.tokensReady;
     const token = tokens.find(
       ({ address }) => address.toLowerCase() === tokenAddress.toLowerCase()
@@ -148,19 +149,21 @@ class DexAg {
     }
     return token.symbol;
   }
-  async getAtomicAmountFromDisplayAmount(amount, tokenAddress) {
+  async getAtomicAmountFromDisplayAmount(amount: string, tokenAddress: string): Promise<string> {
     const tokens = await this.tokensReady;
+    // @ts-ignore
     const { decimals } = tokens.find(
       ({ address }) => address.toLowerCase() === tokenAddress.toLowerCase()
     );
     return new bn(amount).times(10 ** decimals).toString();
   }
-  async getDisplayAmountFromAtomicAmount(amount, tokenAddress) {
+  async getDisplayAmountFromAtomicAmount(amount: string, tokenAddress: string): Promise<string> {
     const tokens = await this.tokensReady;
+    // @ts-ignore
     const { decimals } = tokens.find(
       ({ address }) => address.toLowerCase() === tokenAddress.toLowerCase()
     );
-    return amount / 10 ** decimals;
+    return (Number(amount) / 10 ** decimals).toString();
   }
   async fetchQuote(quoteRequest: QuoteRequest): Promise<QuoteResponse> {
     const { sourceToken, destinationToken, sourceAmount } = quoteRequest;
@@ -179,7 +182,7 @@ class DexAg {
       sourceAmountFormatted
     });
     const destinationAmount = await this.getAtomicAmountFromDisplayAmount(
-      quote.destinationAmountFormatted,
+      quote.destinationAmountFormatted.toString(),
       destinationToken
     );
 
@@ -218,7 +221,7 @@ class DexAg {
     });
 
     const destinationAmount = await this.getAtomicAmountFromDisplayAmount(
-      destinationAmountFormatted,
+      destinationAmountFormatted.toString(),
       destinationToken
     );
 

@@ -1,6 +1,6 @@
-const ethers = require("ethers");
-const _ = require("lodash");
-const fetch = require("isomorphic-fetch");
+import ethers from "ethers"
+import _  from "lodash"
+import fetch from "isomorphic-fetch"
 
 const GAS_URL = "https://ethgasstation.airswap.io/ethgasAPI.json";
 
@@ -46,4 +46,4 @@ class Gas {
   }
 }
 
-module.exports = { fetchGasSettings, Gas };
+export default Gas;

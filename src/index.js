@@ -23,7 +23,7 @@ import {
 } from "./utils";
 import Web3 from "web3";
 import TransactionButton from "./TransactionButton";
-import { Gas } from "./gas";
+import Gas from "./gas";
 
 const gas = new Gas();
 

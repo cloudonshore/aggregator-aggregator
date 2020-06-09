@@ -18,8 +18,9 @@ import {
   TradeResponse
 } from "./types";
 import { normalizeRequestTokens, normalizeResponseTokens } from "./utils";
+import Web3 from "web3";
 
-function approveToken(tokenAddress, spender, signer, options = {}) {
+function approveToken(tokenAddress: string, spender: string, signer: any, options = {}) {
   const contract = getERC20Contract(tokenAddress, signer);
   return contract.approve(spender, TOKEN_APPROVAL_AMOUNT, { ...options });
 }
@@ -34,7 +35,7 @@ interface AggregatedTradeResponse extends TradeResponse {
   aggregator: string;
 }
 
-const ETH = {
+const ETH: Token = {
   symbol: "ETH",
   decimals: 18,
   address: "0x0000000000000000000000000000000000000000"
@@ -70,21 +71,23 @@ class AggregatorAggregator {
       }))
     );
 
-    const tokenAddressesArray = tokensCleaned.map(tokens =>
+    const tokenAddressesArray: Array<Array<string>> = tokensCleaned.map(tokens =>
       tokens.map(token => token.address)
     );
 
-    const commonAddresses = _.union(...tokenAddressesArray);
-    const commonTokens = commonAddresses.map(address => {
+    const commonAddresses: Array<string> = _.union(...tokenAddressesArray);
+    const commonTokens: Array<Token> = _.compact(commonAddresses.map(address => {
       return _.find(_.flatten(tokensCleaned), t => t.address === address);
-    });
+    }))
+
+    const combinedTokens = [ETH, ...commonTokens.filter(t => t.symbol !== "ETH")]
 
     return _.uniqBy(
-      [ETH, ...commonTokens.filter(t => t.symbol !== "ETH")],
+      combinedTokens,
       "address"
     );
   }
-  async validateRequestTokensForAgg({ sourceToken, destinationToken }, aggKey) {
+  async validateRequestTokensForAgg({ sourceToken, destinationToken }: { sourceToken: string, destinationToken: string }, aggKey: string) {
     const tokens = await this.aggregators[aggKey].tokensReady;
 
     if (!_.find(tokens, { address: sourceToken })) {
@@ -101,7 +104,7 @@ class AggregatorAggregator {
       userAddress,
       slippage
     }: TradeRequest,
-    web3
+    web3: Web3
   ): Promise<AggregatedTradeResponse[]> {
     const keys = Object.keys(this.aggregators);
     const trades = await Promise.all(
@@ -158,11 +161,11 @@ class AggregatorAggregator {
       approvalNeeded: approvals[i]
     }));
   }
-  async checkApprovals(trades, web3) {
+  async checkApprovals(trades: any, web3: any) {
     const provider = new ethers.providers.Web3Provider(web3.currentProvider);
     const signer = provider.getSigner();
     const approvalsNeeded = await Promise.all(
-      trades.map(async trade => {
+      trades.map(async (trade: any) => {
         if (trade.sourceToken === ETH.address || trade.error) {
           return null;
         }

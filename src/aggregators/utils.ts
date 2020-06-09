@@ -1,4 +1,4 @@
-const ethAddressByAggregator = {
+const ethAddressByAggregator: { [key: string]: string } = {
   paraswap: "0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee",
   oneInch: "0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee",
   totle: "0x0000000000000000000000000000000000000000",
@@ -6,8 +6,8 @@ const ethAddressByAggregator = {
   zeroEx: "0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee"
 };
 
-function normalizeRequestTokens({ sourceToken, destinationToken }, aggKey) {
-  const fixEth = address =>
+function normalizeRequestTokens({ sourceToken, destinationToken }: { sourceToken: string, destinationToken: string }, aggKey: string) {
+  const fixEth = (address: string) =>
     address === "0x0000000000000000000000000000000000000000"
       ? ethAddressByAggregator[aggKey]
       : address;
@@ -18,8 +18,8 @@ function normalizeRequestTokens({ sourceToken, destinationToken }, aggKey) {
   };
 }
 
-function normalizeResponseTokens({ sourceToken, destinationToken }, aggKey) {
-  const fixEth = address =>
+function normalizeResponseTokens({ sourceToken, destinationToken }: { sourceToken: string, destinationToken: string }, aggKey: string) {
+  const fixEth = (address: string) =>
     address === "0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee"
       ? "0x0000000000000000000000000000000000000000"
       : address;

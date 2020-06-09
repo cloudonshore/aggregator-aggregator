@@ -86,6 +86,14 @@ interface TotleQuote {
   };
 }
 
+interface TotleTradeRequest extends TradeRequest {
+  includeTransaction: boolean
+}
+
+interface TotleQuoteRequest extends QuoteRequest {
+  includeTransaction: boolean
+}
+
 function buildTotleRequest({
   sourceToken,
   destinationToken,
@@ -93,7 +101,7 @@ function buildTotleRequest({
   includeTransaction,
   slippage,
   userAddress
-}) {
+}: TotleTradeRequest) {
   return {
     swaps: [
       {
@@ -122,7 +130,7 @@ function buildTotleQuoteRequest({
   destinationToken,
   sourceAmount,
   includeTransaction
-}) {
+}: TotleQuoteRequest) {
   return {
     swap: {
       sourceAsset: sourceToken,
@@ -150,7 +158,7 @@ class Totle {
       .get(`${TOTLE_BASE_URL}/tokens`)
       .then(resp => resp.data);
 
-    return tokenResponse.tokens.map(t => ({
+    return tokenResponse.tokens.map((t: Token) => ({
       ...t,
       address: t.address.toLowerCase()
     }));
@@ -180,7 +188,7 @@ class Totle {
     includeTransaction,
     slippage,
     userAddress
-  }: TotleQuoteRequest): Promise<TotleQuote> {
+  }: TotleTradeRequest): Promise<TotleQuote> {
     const totleRequest = buildTotleRequest({
       sourceToken,
       destinationToken,
@@ -230,7 +238,7 @@ class Totle {
     });
 
     const { to, data, value } = quote.response.transactions.find(
-      t => t.type === "swap"
+      (t:any) => t.type === "swap"
     ).tx;
 
     return {
