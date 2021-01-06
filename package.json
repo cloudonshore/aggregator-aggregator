@@ -7,7 +7,7 @@
   "dependencies": {
     "@0x/contract-addresses": "4.9.0",
     "airswap.js": "0.1.182",
-    "axios": "0.19.2",
+    "axios": "0.21.1",
     "bignumber.js": "9.0.0",
     "grommet": "2.7.6",
     "lodash": "4.17.15",
